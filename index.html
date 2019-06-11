@@ -1,35 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My google Map</title>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Circles</title>
     <style>
-            #map{
-            height:500px;
-            width:100%;
-            }
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
     </style>
-
-</head>
-<body>
-    <h1>My google map</h1>
+  </head>
+  <body>
     <div id="map"></div>
     <script>
-   function initMap(){
-       var options = {
-           zoom:4,
-           center :{lat:41.3601,lng:-102.0589}
-       }
-       var map = new google.maps.Map(document.getElementById('map'), options)
-   }
-</script>
+      // This example creates circles on the map, representing contributors in North
+      // America and Canada.
+
+      // First, create an object containing LatLng and population for each city.
+      var citymap = {
+        seattle: {
+          center: {lat: 47.6062, lng: -122.3321},
+          population: 110000
+        },
+        boston: {
+          center: {lat: 42.3601, lng: -71.0589},
+          population: 66000
+        },
+        sanfrancisco: {
+          center: {lat: 37.7749, lng: -121.4194},
+          population: 38576
+        },
+        chicago: {
+          center: {lat: 41.8781, lng: -87.6298},
+          population: 60350
+        },
+        toronto:{
+            center: {lat: 43.6532, lng: -79.3832},
+          population: 50000
+        },
+        vancouver:{
+            center: {lat: 49.2827, lng: -123.122},
+          population: 3000
+        }
+      
+      };
+
+      function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: {lat: 37.090, lng: -95.712},
+          mapTypeId: 'roadmap'
+        });
+
+        // Construct the circle for each value in citymap.
+        var cityCircle
+        // Note: We scale the area of the circle based on the population.
+        for (var city in citymap) {
+          // Add the circle for this city to the map.
+           cityCircle = new google.maps.Circle({
+            strokeColor: '#8B008B',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#4B0082',
+            fillOpacity: 0.35,
+            map: map,
+            center: citymap[city].center,
+            radius: Math.sqrt(citymap[city].population) * 500
+          });
+        }
+
+       
+google.maps.MouseEvent(cityCircle, 'click', function() {
+  console.log('Vertex removed from inner path.');
+});
 
 
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQrojMwOnW4bwDs3jBvb-Rt7GuZPqtpkI&callback=initMap"
->
-</script>
-</body>
-</html>
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQrojMwOnW4bwDs3jBvb-Rt7GuZPqtpkI&callback=initMap">
+    </script>
+  </body>
+</html>{}
